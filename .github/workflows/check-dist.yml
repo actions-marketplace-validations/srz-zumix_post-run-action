@@ -1,4 +1,4 @@
-# In JavaScript actions, `dist/` is a special directory. When you reference
+# In TypeScript actions, `dist/` is a special directory. When you reference
 # an action with the `uses:` property, `dist/index.js` is the code that will be
 # run. For this project, the `dist/index.js` file is transpiled from other
 # source files. This workflow ensures the `dist/` directory contains the
@@ -10,10 +10,12 @@
 name: Check Transpiled JavaScript
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
-  pull_request:
 
 permissions:
   contents: read
@@ -23,18 +25,16 @@ jobs:
     name: Check dist/
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      statuses: write
-
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
           cache: npm
@@ -47,7 +47,8 @@ jobs:
         id: build
         run: npm run bundle
 
-      # This will fail the workflow if the PR wasn't created by Dependabot.
+      # This will fail the workflow if the `dist/` directory is different than
+      # expected.
       - name: Compare Directories
         id: diff
         run: |
@@ -57,12 +58,12 @@ jobs:
             exit 1
           fi
 
-      # If `dist/` was different than expected, and this was not a Dependabot
-      # PR, upload the expected version as a workflow artifact.
+      # If `dist/` was different than expected, upload the expected version as a
+      # workflow artifact.
       - if: ${{ failure() && steps.diff.outcome == 'failure' }}
         name: Upload Artifact
         id: upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist
           path: dist/

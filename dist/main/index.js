@@ -1,16 +1,5 @@
-/******/ (() => { // webpackBootstrap
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
 /**
  * The entrypoint for the action.
  */
-
-console.log('post-run-action')
-
-module.exports = __webpack_exports__;
-/******/ })()
-;
+console.log('post-run-action');
+//# sourceMappingURL=index.js.map

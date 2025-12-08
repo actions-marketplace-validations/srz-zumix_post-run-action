@@ -12,10 +12,10 @@ inputs:
     # custom  : e.g. `bash -l -ex {0}`
     # see https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
     description: 'custom shell command'
-    default: ""
+    default: ''
 
 runs:
-  using: node16
+  using: node20
   main: dist/main/index.js
   post: dist/post/index.js
 
